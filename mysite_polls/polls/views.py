@@ -1,3 +1,5 @@
+from django.utils import timezone
+
 from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
@@ -21,8 +23,11 @@ class IndexView(generic.ListView):
     template_name = 'polls/index.html'
     context_object_name = 'latest_question_list'
 
+    # def get_queryset(self):
+    #     return Question.objects.order_by('-pub_date')[:5]
+
     def get_queryset(self):
-        return Question.objects.order_by('-pub_date')[:5]
+        return Question.objects.filter(pub_date__lte=timezone.now()).order_by('-pub_date')[:5]
 
 
 # def detail(request, question_id):
